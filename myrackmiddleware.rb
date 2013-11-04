@@ -13,6 +13,6 @@ class MyRackMiddleware
   
   def debug?(env)
     req = Rack::Request.new(env)
-    req.params["debug"] == "1"
+    req.params["DEBUG"] == "1"
   end    
 end
