@@ -4,7 +4,7 @@ class MyApp
     data = file.read
     file.close 	
     req = Rack::Request.new(env)
-    data << "<script>document.getElementById('q_search').value='" << req.params["hello"].to_s << "';</script>"
+    data << "<script>document.getElementById('q_search').value='" << req.params["hello"].to_s << "';</script>" if req.params["hello"]
     [200, {"Content-Type" => "text/html"}, ["#{data}"]]
   end
 end
