@@ -2,21 +2,17 @@ class MyRackMiddleware
   def initialize(appl)
     @appl = appl
   end
-	def call(env)
-		start = Time.now
 
-	 status, headers, body = @appl.call(env)
-	  append_s = ".... MyRackMiddleware"
-
-	  req = Rack::Request.new(env)
-	  #append_s = req.params.to_s
-     	stop = Time.now
-
-     	#append_s = "Response timeee #{stop - start}"
-     	puts "Response timeee #{stop - start}"
-     	
-
-	  body << append_s if req.params["d"] == "1"
-	  [status, headers, body]
-	end
+  def call(env)
+    start = Time.now if debug?(env)
+    status, headers, body = @appl.call(env)
+    stop = Time.now if debug?(env)
+    puts "Response time: #{stop - start}" if debug?(env)
+    [status, headers, body]
+  end
+  
+  def debug?(env)
+    req = Rack::Request.new(env)
+    req.params["debug"] == "1"
+  end    
 end
